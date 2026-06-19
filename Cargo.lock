@@ -297,6 +297,7 @@ dependencies = [
 [[package]]
 name = "dx-serializer"
 version = "0.1.0"
+source = "git+https://github.com/essence-dx/serializer#defcb6d340b0dc8a090828af5845b37eea3d4a4b"
 dependencies = [
  "bincode",
  "blake3",
