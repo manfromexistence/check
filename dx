@@ -1,0 +1,38 @@
+name="dx-check-engine"
+kind="rust-library"
+score_max=500
+main_target="cpp"
+supported_target_count=8
+
+targets[id role](
+c supported
+cpp main
+rust engine
+typescript adapter-planning
+javascript adapter-planning
+python adapter-planning
+go adapter-planning
+web audit
+)
+
+cpp_tools[id target parser mode](
+clang-format format clang-format dry-run
+clang-tidy lint clang-tidy compile-database
+cppcheck lint cppcheck-xml source-or-compile-database
+clangd typecheck clangd compile-database
+cmake-build typecheck cxx-compiler preset-or-configured-build-dir
+ctest test ctest preset-or-build-dir
+)
+
+web_audit_capabilities[id status](
+extensionless-dx-targets implemented
+web-audit-json-parser implemented
+http-html-metadata-runner implemented
+native-web-lighthouse-report implemented
+dx-litehouse implemented
+official-google-lighthouse-submodule implemented
+official-lighthouse-json-import implemented
+official-lighthouse-timeout implemented
+dx-js-lighthouse-runtime-receipt gated
+serializer-result-import implemented
+)

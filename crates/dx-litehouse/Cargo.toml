@@ -1,0 +1,16 @@
+[package]
+name = "dx-litehouse"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.94.0"
+description = "Core lighthouse functionality for dx-check-engine"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/dx-www/dx-www"
+
+[lib]
+name = "dx_litehouse"
+path = "src/lib.rs"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"

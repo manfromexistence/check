@@ -1,0 +1,32 @@
+[package]
+name = "dx-check"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.94.0"
+description = "High-performance rules engine and diagnostic toolkit for DX"
+license = "MIT OR Apache-2.0"
+exclude = ["third_party/", "tests/", "benches/"]
+
+[lib]
+name = "dx_check_engine"
+path = "src/lib.rs"
+
+[dependencies]
+anyhow = "1.0"
+blake3 = "1.5"
+dx-litehouse = { path = "crates/dx-litehouse", version = "0.1.0" }
+ed25519-dalek = "2"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_yaml = "0.9"
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls"] }
+regex = "1"
+serializer = { package = "dx-serializer", git = "https://github.com/essence-dx/serializer", version = "0.1.0" }
+toml = "0.9"
+
+[dev-dependencies]
+tempfile = "3.10"
+
+[[bin]]
+name = "dx-check-web-audit"
+path = "src/bin/dx-check-web-audit.rs"

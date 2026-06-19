@@ -1,0 +1,4 @@
+schema="dx.check.web_lighthouse_equivalence.v1"
+
+web_lighthouse_equivalence[runtime_id provider executable_hash_blake3 status sample_count category_scores_match lhr_json_shape_match](
+)

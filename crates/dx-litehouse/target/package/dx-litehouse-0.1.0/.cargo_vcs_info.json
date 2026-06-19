@@ -1,0 +1,7 @@
+{
+  "git": {
+    "sha1": "881bccdb565756a0b1de4c0965aa00ba31ca75a5",
+    "dirty": true
+  },
+  "path_in_vcs": "crates/dx-litehouse"
+}

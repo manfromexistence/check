@@ -1,0 +1,51 @@
+schema="dx.check.details"
+crate="dx-check-engine"
+score_max=500
+main_target="cpp"
+current_status="self-check-enabled"
+
+targets[id role status](
+c supported implemented
+cpp main implemented
+rust engine implemented
+typescript adapter-planning supported
+javascript adapter-planning supported
+python adapter-planning supported
+go adapter-planning supported
+web audit implemented
+)
+
+cpp_tools[id target parser status](
+clang-format format clang-format implemented
+clang-tidy lint clang-tidy implemented
+cppcheck lint cppcheck-xml implemented
+clangd typecheck clangd implemented
+cmake-build typecheck cxx-compiler implemented
+ctest test ctest implemented
+)
+
+web_audit[id status evidence](
+extensionless-dx-targets implemented "dx web_audit_targets table"
+web-audit-results implemented "dx web_audit_results table"
+web-audit-runner implemented "dx-check-web-audit binary"
+native-web-lighthouse-report implemented "dx.check.web_lighthouse categories and audits"
+dx-litehouse implemented "engine=dx-litehouse schema=dx.check.web_lighthouse modes=native-http-html,lighthouse-json-import"
+official-google-lighthouse-submodule implemented "third_party/google-lighthouse pinned to GoogleChrome/lighthouse v13.3.0"
+official-lighthouse-json-import implemented "dx-check-web-audit --lighthouse official|auto --lighthouse-json --lighthouse-repo --lighthouse-bin"
+official-lighthouse-timeout implemented "dx-check-web-audit --lighthouse-timeout-seconds"
+dx-js-lighthouse-runtime-receipt gated ".dx/check/web-lighthouse-runtimes.sr accepts DX JS/build Lighthouse commands only with claim_status=proven_bundle equivalence_status=verified and matching executable hash"
+dx-js-lighthouse-equivalence-receipt gated ".dx/check/web-lighthouse-equivalence.sr must prove official Lighthouse category-score and LHR JSON-shape equivalence for the promoted executable hash"
+web-audit-rules implemented "web_http_status web_html_bytes web_title_present web_description_present web_canonical_present web_viewport_present web_security_header_count"
+)
+
+artifacts[path purpose generated](
+"dx" "extensionless project config" true
+".dx/check/check-details.sr" "check detail source" true
+".dx/check/web-lighthouse-runtimes.sr" "web Lighthouse runtime receipt source" true
+".dx/check/web-lighthouse-equivalence.sr" "web Lighthouse equivalence receipt source" true
+".dx/serializer/dx.machine" "extensionless config machine output" true
+".dx/serializer/check-check-details.machine" "check detail machine output" true
+".dx/serializer/check-web-lighthouse-runtimes.machine" "web Lighthouse runtime receipt machine output" true
+".dx/serializer/check-web-lighthouse-equivalence.machine" "web Lighthouse equivalence receipt machine output" true
+".dx/serializer/check-dx-default.machine" "default rule pack machine output" true
+)

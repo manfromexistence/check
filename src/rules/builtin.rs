@@ -1,0 +1,67 @@
+use anyhow::Result;
+use serializer::llm_to_document;
+
+use crate::model::{
+    DxRuleCategoryDefinition, DxRuleDefinition, DxRulePackStatus, DxRulePackSummary,
+};
+use crate::rule_pack::{categories_from_document, rules_from_document};
+
+pub(super) const DEFAULT_RULE_PACK: &str = r#"
+rule_pack(id=dx-check-default version=1 title=DXCheckDefaultRules kind=dx-check-rule-pack)
+
+categories[id label weight](
+code-quality "Code Quality" 100
+structure Structure 100
+web-performance "Web Performance" 100
+dx-framework-health "DX Framework Health" 100
+test-readiness "Test Readiness" 100
+)
+
+rules[id category severity weight metric op threshold docs provenance](
+source-file-line-count structure warning 8 line_count max 400 docs/check/file-size.md dx-default
+source-file-byte-size structure warning 6 byte_size max 120000 docs/check/file-size.md dx-default
+source-owned-naming-convention structure warning 6 naming_convention absent 0 docs/check/naming.md dx-default
+source-owned-node-modules structure failure 10 node_modules absent 0 docs/check/source-owned.md dx-default
+generated-machine-leak structure warning 8 generated_machine absent 0 docs/check/generated.md dx-default
+generated-source-leak structure warning 8 generated_source absent 0 docs/check/generated.md dx-default
+giant-component code-quality warning 8 component_lines max 300 docs/check/components.md dx-default
+component-boundary-leak code-quality warning 8 component_boundary absent 0 docs/check/components.md dx-default
+component-quality-affordance code-quality info 4 component_quality present 0 docs/check/components.md dx-default
+rust-unwrap-maintainability code-quality warning 5 rust_unwraps max 0 docs/check/rust.md dx-default
+insecure-source-defaults code-quality warning 8 insecure_source max 0 docs/check/security.md dx-default
+ai-maintainable-project-structure dx-framework-health info 4 project_structure min 1 docs/check/structure.md dx-default
+test-readiness-missing test-readiness warning 6 test_count min 1 docs/check/tests.md dx-default
+)
+"#;
+
+pub(super) fn default_rules() -> Result<Vec<DxRuleDefinition>> {
+    let document = llm_to_document(DEFAULT_RULE_PACK)?;
+    Ok(rules_from_document(&document))
+}
+
+pub(super) fn default_categories() -> Result<Vec<DxRuleCategoryDefinition>> {
+    let document = llm_to_document(DEFAULT_RULE_PACK)?;
+    Ok(categories_from_document(&document))
+}
+
+pub(super) fn default_summary(rule_count: usize) -> DxRulePackSummary {
+    DxRulePackSummary {
+        id: "dx-check-default".to_string(),
+        version: "1".to_string(),
+        status: DxRulePackStatus::BuiltIn,
+        source_path: None,
+        machine_path: None,
+        source_hash: Some(
+            blake3::hash(DEFAULT_RULE_PACK.as_bytes())
+                .to_hex()
+                .to_string(),
+        ),
+        registry_source: Some("local-builtin".to_string()),
+        provenance: Some("dx-default".to_string()),
+        lock_status: Some("built-in".to_string()),
+        signed: None,
+        signer: None,
+        signature_status: None,
+        rule_count,
+    }
+}

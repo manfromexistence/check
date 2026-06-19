@@ -1,0 +1,7 @@
+schema="dx.check.web_lighthouse_runtimes.v1"
+
+web_lighthouse_runtimes[id provider command cwd executable hash_blake3 claim_status equivalence_status](
+)
+
+web_lighthouse_runtime_args[runtime_id position arg](
+)
