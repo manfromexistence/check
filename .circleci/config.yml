@@ -29,13 +29,25 @@ jobs:
             $ErrorActionPreference = "Stop"
             cargo build --release
             New-Item -ItemType Directory -Path dist -Force | Out-Null
-            Copy-Item -Path "target\release\*.exe" -Destination "dist\" -Force -ErrorAction SilentlyContinue
+            
+            # Try specific naming to dx-$proj.exe
+            if (Test-Path "target\release\$proj.exe") {
+                Copy-Item -Path "target\release\$proj.exe" -Destination "dist\dx-$proj.exe" -Force
+            }
+            if (Test-Path "target\release\dx-$proj.exe") {
+                Copy-Item -Path "target\release\dx-$proj.exe" -Destination "dist\dx-$proj.exe" -Force
+            }
+            if (Test-Path "target\release\search_cli.exe") {
+                # for metasearch or similar
+                Copy-Item -Path "target\release\search_cli.exe" -Destination "dist\dx-metasearch.exe" -Force
+            }
+
             if ($env:CIRCLE_SHA1) {
                 $shortSha = $env:CIRCLE_SHA1.Substring(0, 12)
             } else {
                 $shortSha = "local"
             }
-            $archive = "dx-windows-x86_64-$shortSha.zip"
+            $archive = "dx-check-windows-x86_64-$shortSha.zip"
             if (Test-Path "dist\*.exe") {
                 Compress-Archive -Path "dist\*" -DestinationPath "dist\$archive" -Force
                 $hash = Get-FileHash -Algorithm SHA256 -Path "dist\$archive"
@@ -43,7 +55,6 @@ jobs:
             }
       - store_artifacts:
           path: dist
-
       - run:
           name: Upload artifact to GitHub release
           shell: powershell.exe
