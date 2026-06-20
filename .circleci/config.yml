@@ -30,6 +30,7 @@ jobs:
             cargo build --release
             New-Item -ItemType Directory -Path dist -Force | Out-Null
             
+            $proj = "check"
             # Try specific naming to dx-$proj.exe
             if (Test-Path "target\release\$proj.exe") {
                 Copy-Item -Path "target\release\$proj.exe" -Destination "dist\dx-$proj.exe" -Force
@@ -71,6 +72,7 @@ workflows:
     when: << pipeline.parameters.release_artifacts >>
     jobs:
       - windows-release
+
 
 
 
