@@ -30,3 +30,10 @@ tempfile = "3.10"
 [[bin]]
 name = "dx-check"
 path = "src/bin/dx-check-web-audit.rs"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"
